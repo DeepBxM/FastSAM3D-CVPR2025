@@ -7,14 +7,57 @@
 
 ---
 
-## 💡 环境依赖
 
-- Python 3.7+
-- nibabel
-- numpy
-- os, json, shutil 等标准库
+##  Getting Started
 
----
+**System Requirements:**
+
+* **Python**: `version 3.9 or above`
+* **CUDA**: `version 12.1`
+* **FLASH Attention support GPU**: `Ampere, Ada, or Hopper GPUs (e.g., A100, RTX 3090, RTX 4090, H100).`
+
+
+###  Installation
+
+<h4>From <code>source</code></h4>
+
+> 1. Clone the FastSAM3D-v1 repository:
+>
+> ```console
+> $ git clone https://github.com/skill-diver/FastSAM3D-v1
+> ```
+>
+> 2. Change to the project directory:
+> ```console
+> $ cd FastSAM3D-v1
+> ```
+>
+> 3. Install the dependencies:
+> ```console
+> $ pip install -r requirements.txt
+
+
+###  Usage
+
+<h4>From <code>source</code></h4>
+
+> 1.Prepare Your Training Data (from nnU-Net-style dataset): 
+
+> Ensure that your training data is organized according to the structure shown in the `data/medical_preprocessed` directories. The target file structures should be like the following:
+> ```
+> data/medical_preprocessed
+>       ├── adrenal
+>       │ ├── ct_WORD
+>       │ │ ├── imagesTr
+>       │ │ │ ├── word_0025.nii.gz
+>       │ │ │ ├── ...
+>       │ │ ├── labelsTr
+>       │ │ │ ├── word_0025.nii.gz
+>       │ │ │ ├── ...
+>       ├── ...
+> ```
+
+
 
 ## 📁 数据结构说明
 
@@ -31,13 +74,13 @@
 
 ### 1️⃣ 将所有 `gts_npz` 中的标签 `.npz` 转换为 `label.nii.gz`
 
-从每个 `.npz` 文件中提取 `label.npy`，并保存为 `label.nii.gz` 格式，写入到 `labels/` 文件夹中。
+从每个 `.npz` 文件中提取 `gts.npy`，并保存为 `label.nii.gz` 格式，写入到 `labels/` 文件夹中。
 
 ---
 
 ### 2️⃣ 根据 `structure.json` 的顶层键，将对应的 `label.nii.gz` 分类
 
-- 读取 `structure.json` 顶层键
+- 读取 `CVPR25.json` 顶层键
 - 遍历 `labels/` 中的 `label.nii.gz`
   - 如果键名匹配：
     - 在指定文件夹中以键名创建子文件夹
@@ -49,19 +92,12 @@
 
 ### 3️⃣ 对剩余未匹配的 `label.nii.gz`，更新 JSON 文件
 
-使用特定规则（如使用图像内容、文件名、路径信息等）为这些文件提取新的键名，并更新到 `structure.json` 中。
+使用特定规则（如使用图像内容、文件名、路径信息等）为这些文件提取新的键名，并更新到 `CVPR25.json` 中。
+
 
 ---
 
-### 4️⃣ 使用更新后的 `structure.json` 重新执行第 2 步
-
-将剩余的标签再次分类整理。
-
-> 📌 示例：将原始名为 MR 的图像统一命名为 `Spine_Vertebrae_IVD` 结构。
-
----
-
-### 5️⃣ 按照 JSON 文件中的标签定义，对每个标签进行提取并分类存储
+### 4️⃣ 按照 JSON 文件中的标签定义，对每个标签进行提取并分类存储
 
 - 对 `label.nii.gz` 中的每个标签进行分割提取
 - 根据标签名创建对应子文件夹
@@ -69,33 +105,33 @@
 
 ---
 
-### 6️⃣ 将 `image.npz` 中的 `imgs.npy` 转换为 `image.nii.gz`
+### 5️⃣ 将 `image.npz` 中的 `imgs.npy` 转换为 `image.nii.gz`
 
 - 读取 `imgs.npy` 并保存为 `image.nii.gz` 格式
 
 ---
 
-### 7️⃣ 移动 `image.nii.gz` 到每个器官子文件夹的 `imagesTr/` 中
+### 6️⃣ 移动 `image.nii.gz` 到每个器官子文件夹的 `imagesTr/` 中
 
 - 每个器官子文件夹内新建 `imagesTr/`
 - 将对应的 `image.nii.gz` 移动进去
 
 ---
 
-### 8️⃣ 重命名图像和标签文件，去除后缀 `_image` 和 `_label`
+### 7️⃣ 重命名图像和标签文件，去除后缀 `_image` 和 `_label`
 
 例如：
 
 
 ---
 
-### 9️⃣ 保存模型预测结果 `pred4`
+### 8️⃣ 保存模型预测结果 `pred4`
 
 将模型预测的第 4 个版本结果（`pred4`）保存为指定格式，结构与原始标签一致。
 
 ---
 
-### 🔟 验证集结果转换为 `.npz` 格式并保存
+### 9️⃣ 验证集结果转换为 `.npz` 格式并保存
 
 - 将验证集的预测结果（如 `.nii.gz`）转换为 `.npz` 格式
 - 每个 `.npz` 包含两个键：
@@ -103,7 +139,7 @@
   - `spacing.npy`
 - 所有 `.npz` 保存在一个统一的输出文件夹中
 
----
+---🔟
 
 ## 📌 项目目标
 
