@@ -122,6 +122,10 @@
 
 - 读取 `imgs.npy` 并保存为 `image.nii.gz` 格式
 
+>    ```console
+>    python image_nii.py
+>    ```
+
 ---
 
 ### 6 移动 `image.nii.gz` 到每个器官子文件夹的 `imagesTr/` 中
@@ -129,18 +133,27 @@
 - 每个器官子文件夹内新建 `imagesTr/`
 - 将对应的 `image.nii.gz` 移动进去
 
+>    ```console
+>    python reallocate.py
+>    ```
+
 ---
 
 ### 7 重命名图像和标签文件，去除后缀 `_image` 和 `_label`
 
-例如：
-
+>    ```console
+>    python same_name.py
+>    ```
 
 ---
 
 ### 8 保存模型预测结果 `pred4`
 
 将模型预测的第 4 个版本结果（`pred4`）保存为指定格式，结构与原始标签一致。
+
+>    ```console
+>    python save.py
+>    ```
 
 ---
 
