@@ -167,7 +167,27 @@
 
 ---
 
+## Checkpoint
 
+Below are the links to the checkpoints for FastSAM3D and its fine-tuned version:
+
+| Model                | Download Link |
+|----------------------|---------------|
+| FASTSAM3D            | [Download](https://huggingface.co/techlove/FastSAM3D/tree/main) |
+| Teacher Model        | [Download](https://huggingface.co/blueyo0/SAM-Med3D/blob/main/sam_med3d_turbo.pth) |
+
+---
+##  Visualize
+<div align="center">
+  <img src="asserts/visualize.png">
+</div>
+##  Contributing
+
+Contributions are welcome! Here are several ways you can contribute:
+
+- **[Report Issues](https://github.com/skill-diver/FastSAM3D-v1/issues)**: Submit bugs found or log feature requests for the `FastSAM3D-v1` project.
+- **[Submit Pull Requests](https://github.com/skill-diver/FastSAM3D-v1/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
+- **[Join the Discussions](https://github.com/skill-diver/FastSAM3D-v1/discussions)**: Share your insights, provide feedback, or ask questions.
 
 <details closed>
 <summary>Contributor Graph</summary>
