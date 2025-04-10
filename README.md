@@ -149,7 +149,7 @@
 将模型预测的第 4 个版本结果（`pred4`）保存为指定格式，结构与原始标签一致。
 
 >    ```console
->    python save.py
+>    python save_pred4.py
 >    ```
 
 ---
