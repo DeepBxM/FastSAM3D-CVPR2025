@@ -154,17 +154,7 @@
 
 ---
 
-## 📌 项目目标
 
-实现标准化的医学图像预处理流程，便于后续模型训练与评估，支持用于 MICCAI、SegTHOR、AMOS 等医学图像任务的数据集结构。
-
----
-
-## 📞 联系方式
-
-如需更多帮助或协作，请联系项目负责人。
-
----
 
 <details closed>
 <summary>Contributor Graph</summary>
