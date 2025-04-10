@@ -165,6 +165,10 @@
   - `spacing.npy`
 - 所有 `.npz` 保存在一个统一的输出文件夹中
 
+>    ```console
+>    python convert_npz.py
+>    ```
+
 ---
 
 ## Checkpoint
