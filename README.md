@@ -1,9 +1,6 @@
 # fastsam3D
 
 
-# Medical Image Preprocessing Pipeline
-
-本项目用于对医学图像进行预处理，包括标签提取、文件格式转换、结构化组织以及评估结果的保存。以下为项目的各个步骤说明。
 
 ---
 
