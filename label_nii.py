@@ -61,8 +61,8 @@ def convert_folder_npz_to_nifti(input_dir, output_dir):
 
 
 # 设定输入和输出路径
-input_directory = '/media/wagnchogn/ssd_2t/lmy/step/val/labels'
-output_directory = '/media/wagnchogn/ssd_2t/lmy/step/val_new/labels'
+input_directory = ''
+output_directory = ''
 
 # 运行转换
 convert_folder_npz_to_nifti(input_directory, output_directory)
