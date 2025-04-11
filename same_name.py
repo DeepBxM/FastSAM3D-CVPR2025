@@ -32,5 +32,5 @@ def rename_nii_files(root_dir):
 
 
 if __name__ == "__main__":
-    target_dir = "/media/wagnchogn/ssd_2t/lmy/FastSAM3D_copy/data_10per/val_with_organ (copy)"  # 修改为你的根目录
+    target_dir = ''  # 修改为你的根目录
     rename_nii_files(target_dir)
