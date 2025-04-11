@@ -20,5 +20,5 @@ def delete_non_pred4_files(root_dir):
                         print(f"保留: {os.path.join(root, filename)}")
 
 if __name__ == "__main__":
-    target_dir = "./val_stu_5_new"  # 修改为你的根目录
+    target_dir = "./val_stu_5"  # 修改为你的根目录
     delete_non_pred4_files(target_dir)
