@@ -27,33 +27,6 @@ pip install -r requirements.txt
 ---
 
 
-##  Getting Started
-
-**System Requirements:**
-
-* **Python**: `version 3.9 or above`
-* **CUDA**: `version 12.1`
-* **FLASH Attention support GPU**: `Ampere, Ada, or Hopper GPUs (e.g., A100, RTX 3090, RTX 4090, H100).`
-
-
-###  Installation
-
-<h4>From <code>source</code></h4>
-
-> 1. Clone the FastSAM3D-v1 repository:
->
-> ```console
-> $ git clone https://github.com/skill-diver/FastSAM3D-v1
-> ```
->
-> 2. Change to the project directory:
-> ```console
-> $ cd FastSAM3D-v1
-> ```
->
-> 3. Install the dependencies:
-> ```console
-> $ pip install -r requirements.txt
 
 
 ###  Usage
@@ -80,40 +53,20 @@ pip install -r requirements.txt
 
 ## steps
 
-### 1 Organize all NPZ files containing gts.npy from the validation set into the 'labels' folder. The  `classify.py` script can convert NPZ files to NII.GZ format and categorize them based on  `CVPR25.json`.
-
->    ```console
->    python classify.py
->    ```
----
-
-### 2 根据 `CVPR25.json` 的顶层键，将对应的 `label.nii.gz` 分类
-
-- 读取 `CVPR25.json` 顶层键
-- 遍历 `labels/` 中的 `label.nii.gz`
-  - 如果键名匹配：
-    - 在指定文件夹中以键名创建子文件夹
-    - 将对应的 `label.nii.gz` 移动到该子文件夹中
-  - 如果键名不匹配：
-    - 不做处理，保留在 `labels/` 中
+### 1 Prepare Your Training Data
+Organize all NPZ files containing gts.npy from the validation set into the 'labels' folder. The  `classify.py` script can convert NPZ files to NII.GZ format and categorize them based on  `CVPR25.json`.
 
 >    ```console
 >    python classify.py
 >    ```
 
----
 
-### 3 对剩余未匹配的 `label.nii.gz`，更新 JSON 文件
 
-使用特定规则为这些文件提取新的键名，并更新到 `CVPR25.json` 中。
 
->    ```console
->    python renew_json.py
->    ```
-
-可直接使用 `CVPR25.JSON`文件。
 
 ---
+
+
 
 ### 4 按照 JSON 文件中的标签定义，对每个标签进行提取并分类存储
 
