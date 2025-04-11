@@ -144,7 +144,48 @@
 
 ---
 
-### 8 保存模型预测结果 `pred4`
+
+### 8 根据自己的数据来修改 `utils/data_paths.py` 
+> ```
+> img_datas = [
+> "data/train/adrenal/ct_WORD",
+> "data/train/liver/ct_WORD",
+> ...
+> ]
+> ```
+
+### 9 Train the Teacher Model and Prepare Labels(logits)
+>
+>    Use the command below to train the teacher model and prepare labels for guided distillation to the student model, and put your data and checkpoint in the corresponding position of the shell script:
+>    ```console
+>    $ ./preparelabel.sh
+>    ```
+>
+### 10 Distill the Model
+>
+>    To distill the model, run the following command. The distilled checkpoint will be stored in `work_dir`, and put your data and checkpoint in the corresponding position of shell script:
+>    ```console
+>    $ ./distillation.sh
+>
+>    ```
+>
+### 11 Validate the Teacher Model
+>
+>    Validate the teacher model using the command below, and put your data and teacher model (link below) checkpoint in the corresponding position of shell script:
+>    ```console
+>    $ ./validation.sh
+>    ```
+>
+### 12 Validate our FastSAM3D model, or your distilled student model
+>
+>    Finally, to validate the student model after distillation, and put your data, teacher model, FastSAM3D model checkpoint(link below) in the corresponding position of the shell script:
+>    ```console
+>    $ ./validation_student.sh
+>    ```
+
+
+
+### 13 保存模型预测结果 `pred4`
 
 将模型预测的第 4 个版本结果（`pred4`）保存为指定格式，结构与原始标签一致。
 
@@ -154,7 +195,7 @@
 
 ---
 
-### 9 验证集结果转换为 `.npz` 格式并保存
+### 14 验证集结果转换为 `.npz` 格式并保存
 
 - 将验证集的预测结果（如 `.nii.gz`）转换为 `.npz` 格式
 - 每个 `.npz` 包含两个键：
@@ -168,7 +209,7 @@
 
 ---
 
-## Checkpoint
+## 权重
 
 Below are the links to the checkpoints for FastSAM3D and its fine-tuned version:
 
