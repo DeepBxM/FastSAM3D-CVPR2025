@@ -1,7 +1,9 @@
+import os
+import re
+import shutil
 import numpy as np
 import nibabel as nib
-import os
-import shutil
+
 
 def save_to_nifti(data, save_path, is_label=False):
     """
@@ -25,6 +27,7 @@ def save_to_nifti(data, save_path, is_label=False):
 
     nib.save(nifti_img, save_path)
     print(f"Saved: {save_path}")
+
 
 def convert_folder_npz_to_nifti(input_dir):
     """
@@ -54,6 +57,7 @@ def convert_folder_npz_to_nifti(input_dir):
             print(f"Deleted: {npz_path}")
 
     print("All .npz files have been converted to .nii.gz!")
+
 
 def move_images_to_imagestr(images_dir, val_new_dir):
     """
@@ -91,12 +95,44 @@ def move_images_to_imagestr(images_dir, val_new_dir):
         for remaining in image_files:
             print(remaining)
 
-if __name__ == "__main__":
-    images_dir = './images'            # path to .npz files and temporary output .nii.gz
-    val_new_dir = './val'   # root directory containing labelsTr folders
 
-    # Step 1: Convert .npz files to .nii.gz
+def rename_nii_files(root_dir):
+    """
+    Recursively rename .nii.gz files by removing '_image' or '_label' suffix
+
+    Example:
+    - xxx_image.nii.gz → xxx.nii.gz
+    - xxx_label.nii.gz → xxx.nii.gz
+    """
+    for root, dirs, files in os.walk(root_dir):
+        for filename in files:
+            if filename.endswith(".nii.gz"):
+                new_name = re.sub(
+                    r"(_image|_label)(\.nii\.gz)$",
+                    r"\2",
+                    filename
+                )
+
+                if new_name != filename:
+                    old_path = os.path.join(root, filename)
+                    new_path = os.path.join(root, new_name)
+
+                    if not os.path.exists(new_path):
+                        shutil.move(old_path, new_path)
+                        print(f"Renamed: {filename} → {new_name}")
+                    else:
+                        print(f"⚠️ Conflict: {new_name} already exists. Skipped {filename}")
+
+
+if __name__ == "__main__":
+    images_dir = './images'            # Directory with .npz files and temporary .nii.gz
+    val_new_dir = './val_with_organ'   # Root directory with labelsTr folders
+
+    # Step 1: Convert .npz to .nii.gz
     convert_folder_npz_to_nifti(images_dir)
 
-    # Step 2: Move .nii.gz image files into appropriate imagesTr folders
+    # Step 2: Move .nii.gz files to corresponding imagesTr folders
     move_images_to_imagestr(images_dir, val_new_dir)
+
+    # Step 3: Rename .nii.gz files to remove '_image' / '_label' suffix
+    rename_nii_files(val_new_dir)
