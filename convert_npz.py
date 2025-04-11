@@ -102,7 +102,7 @@ class NiftiToNPZConverter:
 
 if __name__ == "__main__":
     converter = NiftiToNPZConverter(
-        json_path="/media/wagnchogn/ssd_2t/lmy/handle/all_json/CVPR25_wanzheng.json",
+        json_path="",
         input_root="./val_stu_5",
         output_dir="./final/save_path"
     )
