@@ -63,21 +63,9 @@ Convert the imgs.npy array from image.npz to NIfTI format image.nii.gz, then mov
 >    python reallocate.py
 >    ```
 
-
-
-
 ---
 
-### 7 重命名图像和标签文件，去除后缀 `_image` 和 `_label`
-
->    ```console
->    python same_name.py
->    ```
-
----
-
-
-### 8 根据自己的数据来修改 `utils/data_paths.py` 
+### 2 Modify `utils/data_paths.py` based on your own data. 
 > ```
 > img_datas = [
 > "data/train/adrenal/ct_WORD",
@@ -86,40 +74,49 @@ Convert the imgs.npy array from image.npz to NIfTI format image.nii.gz, then mov
 > ]
 > ```
 
-### 9 Train the Teacher Model and Prepare Labels(logits)
->
->    Use the command below to train the teacher model and prepare labels for guided distillation to the student model, and put your data and checkpoint in the corresponding position of the shell script:
+---
+
+### 3 Train the Teacher Model and Prepare Labels(logits)
+
+To train the teacher model and prepare labels for guided distillation to the student model, run the command below. Ensure your data and checkpoint are placed in the designated locations within the shell script.
+
 >    ```console
->    $ ./preparelabel.sh
->    ```
->
-### 10 Distill the Model
->
->    To distill the model, run the following command. The distilled checkpoint will be stored in `work_dir`, and put your data and checkpoint in the corresponding position of shell script:
->    ```console
->    $ ./distillation.sh
->
->    ```
->
-### 11 Validate the Teacher Model
->
->    Validate the teacher model using the command below, and put your data and teacher model (link below) checkpoint in the corresponding position of shell script:
->    ```console
->    $ ./validation.sh
->    ```
->
-### 12 Validate our FastSAM3D model, or your distilled student model
->
->    Finally, to validate the student model after distillation, and put your data, teacher model, FastSAM3D model checkpoint(link below) in the corresponding position of the shell script:
->    ```console
->    $ ./validation_student.sh
+>    python preparelabel.py
 >    ```
 
+---
 
+### 4 Distill the Model
 
-### 13 保存模型预测结果 `pred4`
+To perform distillation, run the command below. The distilled checkpoint will be saved in  `work_dir`. Ensure your data and checkpoint paths are correctly specified in the shell script.
 
-将模型预测的第 4 个版本结果（`pred4`）保存为指定格式，结构与原始标签一致。
+>    ```console
+>    python distillation.py
+>    ```
+
+---
+
+### 5 Validate the Teacher Model
+
+To validate the teacher model, run the command below. Ensure your data and the teacher model checkpoint (linked below) are correctly placed in the shell script.
+
+>    ```console
+>    python validation.py
+>    ```
+
+---
+
+### 6 Validate FastSAM3D model, or your distilled student model
+
+To validate the distilled student model, run the command below. Ensure your data, teacher model, and FastSAM3D checkpoint (linked below) are properly placed in the shell script.
+
+>    ```console
+>    python validation_student.py
+>    ```
+
+---
+
+### 7 Save the model prediction result `pred4`.(if num_clicks=5)
 
 >    ```console
 >    python save_pred4.py
@@ -150,12 +147,5 @@ Below are the links to the checkpoints for FastSAM3D and its fine-tuned version:
 | FASTSAM3D            | [Download](https://huggingface.co/techlove/FastSAM3D/tree/main) |
 | Teacher Model        | [Download](https://huggingface.co/blueyo0/SAM-Med3D/blob/main/sam_med3d_turbo.pth) |
 
-
----
-
-##  Acknowledgement
-- Thanks to the open-source of the following projects:
-  - [Segment Anything](https://github.com/facebookresearch/segment-anything) &#8194;
-  - [SAM-Med3D](https://github.com/uni-medical/SAM-Med3D)
 
 ---
