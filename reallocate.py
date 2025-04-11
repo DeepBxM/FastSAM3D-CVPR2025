@@ -39,6 +39,6 @@ def move_images_to_imagestr(images_dir, val_new_dir):
 
 # 配置路径并执行函数
 if __name__ == "__main__":
-    images_dir = './images (copy)'       # 原始图像目录路径
-    val_new_dir = './val_with_organ (copy)'      # 目标结构根目录路径
+    images_dir = './images'       # 原始图像目录路径
+    val_new_dir = './val_with_organ'      # 目标结构根目录路径
     move_images_to_imagestr(images_dir, val_new_dir)
