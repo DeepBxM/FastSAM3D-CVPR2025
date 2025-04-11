@@ -14,31 +14,9 @@ FastSAM3D is an efficient 3D medical image segmentation framework, leveraging th
 
 ##  Installation
 
-### Install from Source
-
-```bash
-# Clone the repository
-git clone https://github.com/skill-diver/FastSAM3D-v1
-cd FastSAM3D-v1
-
-# Install dependencies
+```
 pip install -r requirements.txt
 ```
----
-
-> ```
-> data/medical_preprocessed
->       ├── adrenal
->       │ ├── ct_WORD
->       │ │ ├── imagesTr
->       │ │ │ ├── word_0025.nii.gz
->       │ │ │ ├── ...
->       │ │ ├── labelsTr
->       │ │ │ ├── word_0025.nii.gz
->       │ │ │ ├── ...
->       ├── ...
-> ```
-
 ---
 
 ## steps
@@ -62,6 +40,21 @@ Convert the imgs.npy array from image.npz to NIfTI format image.nii.gz, then mov
 >    ```console
 >    python reallocate.py
 >    ```
+
+The target file structures should be like the following:
+
+> ```
+> data/medical_preprocessed
+>       ├── adrenal
+>       │ ├── ct_WORD
+>       │ │ ├── imagesTr
+>       │ │ │ ├── word_0025.nii.gz
+>       │ │ │ ├── ...
+>       │ │ ├── labelsTr
+>       │ │ │ ├── word_0025.nii.gz
+>       │ │ │ ├── ...
+>       ├── ...
+> ```
 
 ---
 
