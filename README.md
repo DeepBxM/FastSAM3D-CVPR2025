@@ -120,14 +120,16 @@ Convert the validation set prediction results (e.g., `.nii.gz`) into `.npz` form
 
 ---
 
-## Checkpoints
+## Citation
 
-Below are the links to the checkpoints for FastSAM3D and its fine-tuned version:
+```
+@misc{shen2024fastsam3d,
+      title={FastSAM3D: An Efficient Segment Anything Model for 3D Volumetric Medical Images}, 
+      author={Yiqing Shen and Jingxing Li and Xinyuan Shao and Blanca Inigo Romillo and Ankush Jindal and David Dreizin and Mathias Unberath},
+      year={2024},
+      eprint={2403.09827},
+      archivePrefix={arXiv},
+      primaryClass={eess.IV}
+}
+```
 
-| Model                | Download Link |
-|----------------------|---------------|
-| FASTSAM3D            | [Download](https://huggingface.co/techlove/FastSAM3D/tree/main) |
-| Teacher Model        | [Download](https://huggingface.co/blueyo0/SAM-Med3D/blob/main/sam_med3d_turbo.pth) |
-
-
----
