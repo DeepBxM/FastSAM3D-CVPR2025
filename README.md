@@ -116,21 +116,10 @@ To validate the distilled student model, run the command below. Ensure your data
 
 ---
 
-### 7 Save the model prediction result `pred4`.(if num_clicks=5)
+### 7 change to `.npz` 
 
->    ```console
->    python save_pred4.py
->    ```
-
----
-
-### 14 验证集结果转换为 `.npz` 格式并保存
-
-- 将验证集的预测结果（如 `.nii.gz`）转换为 `.npz` 格式
-- 每个 `.npz` 包含两个键：
-  - `labels.npy`
-  - `spacing.npy`
-- 所有 `.npz` 保存在一个统一的输出文件夹中
+Save the model prediction result `pred4`.(if num_clicks=5) 
+Convert the validation set prediction results (e.g., `.nii.gz`) into `.npz` format, where each file contains `labels.npy` and `spacing.npy`, and save them in a unified output folder.
 
 >    ```console
 >    python convert_npz.py
@@ -138,7 +127,7 @@ To validate the distilled student model, run the command below. Ensure your data
 
 ---
 
-## 权重
+## Checkpoints
 
 Below are the links to the checkpoints for FastSAM3D and its fine-tuned version:
 
