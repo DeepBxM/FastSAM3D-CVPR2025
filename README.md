@@ -1,6 +1,6 @@
-# FastSAM3D (CVPR 2025)
+# FastSAM3D-IEEE Conference on Computer Vision and Pattern Recognition（CVPR 2025)
 
-FastSAM3D is an efficient 3D medical image segmentation framework, leveraging the power of Segment Anything and SAM-Med3D. This project aims for rapid 3D segmentation of general organs and is applicable to a variety of medical imaging tasks.
+FastSAM3D is specifically developed for the CVPR 2025 3D Medical Image Segmentation Challenge. It is designed to provide fast, efficient, and accurate 3D segmentation, leveraging lightweight architectures and optimized inference strategies tailored for the challenge’s unique dataset and requirements.
 
 ---
 
