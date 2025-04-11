@@ -1,68 +1,71 @@
+import os
+import json
+import shutil
 import numpy as np
 import nibabel as nib
-import os
 
 
-def save_to_nifti(data, save_path, is_label=False):
+def load_json(json_path):
+    """ 加载JSON文件 """
+    with open(json_path, 'r') as f:
+        return json.load(f)
+
+
+def extract_labels_from_nii(nii_path):
+    """ 读取 nii.gz 文件，提取唯一的标签值（去除背景0） """
+    img = nib.load(nii_path)
+    data = img.get_fdata()
+    unique_labels = np.unique(data).astype(int)  # 获取唯一标签值
+    unique_labels = unique_labels[unique_labels > 0]  # 去掉背景 0
+    return unique_labels
+
+
+def get_organ_name(label, json_data, dataset_name):
+    """ 从JSON中获取标签对应的器官名称 """
+    dataset_info = json_data.get(dataset_name, {})
+    return dataset_info.get(str(label), [None])[0]  # 取第一个器官名称
+
+
+def organize_dataset(dataset_folder, json_path, output_folder):
     """
-    将 numpy 数组保存为 .nii.gz 格式
-
-    参数:
-    - data: numpy 数组，图像或标签数据
-    - save_path: 保存路径
-    - is_label: 是否为标签数据（影响数据类型）
+    读取 dataset_folder 中的所有子目录，提取 label.nii.gz 文件的标签，并重组数据结构
+    dataset_folder: 原始数据集的根目录（包含 CT_AbdomenAtlas, CT_AMOS, MR_AMOS 等）
+    json_path: JSON 文件路径
+    output_folder: 目标输出路径
     """
-    if is_label:
-        data = data.astype(np.uint8)  # 标签数据转换为 uint8
-    else:
-        data = data.astype(np.float32) if data.dtype == np.float64 else data
+    json_data = load_json(json_path)
 
-    affine = np.eye(4)  # 单位仿射矩阵
-    nifti_img = nib.Nifti1Image(data, affine)
+    # 遍历 dataset_folder 中的所有子文件夹（如 CT_AbdomenAtlas, CT_AMOS, MR_AMOS）
+    for dataset_name in os.listdir(dataset_folder):
+        dataset_path = os.path.join(dataset_folder, dataset_name)
+        if not os.path.isdir(dataset_path):
+            continue
 
-    if is_label:
-        nifti_img.header.set_data_dtype(np.uint8)
-
-    nib.save(nifti_img, save_path)
-    print(f"已保存: {save_path}")
-
-
-def convert_folder_npz_to_nifti(input_dir, output_dir):
-    """
-    遍历文件夹，转换所有 .npz 文件中的 gts.npy 为 .nii.gz
-
-    参数:
-    - input_dir: 存放 .npz 文件的目录
-    - output_dir: 存放转换后 .nii.gz 文件的目录
-    """
-    os.makedirs(output_dir, exist_ok=True)  # 确保输出目录存在
-
-    for filename in os.listdir(input_dir):
-        if filename.endswith('.npz'):
-            npz_path = os.path.join(input_dir, filename)
-            print(f"正在处理: {npz_path}")
-
-            data = np.load(npz_path)
-            if 'gts' not in data:
-                print(f"警告: {filename} 中没有 'gts'，跳过...")
+        # 遍历子文件夹中的 nii.gz 文件
+        for file_name in os.listdir(dataset_path):
+            if not file_name.endswith('.nii.gz'):
                 continue
 
-            gts = data['gts']
+            nii_path = os.path.join(dataset_path, file_name)
+            unique_labels = extract_labels_from_nii(nii_path)
 
-            # 获取文件名主体部分（去掉扩展名）
-            base_name = os.path.splitext(filename)[0]  # 去掉 `.npz`
-            output_filename = f"{base_name}_label.nii.gz"
-            output_path = os.path.join(output_dir, output_filename)
+            for label in unique_labels:
+                organ_name = get_organ_name(label, json_data, dataset_name)
+                if organ_name is None:
+                    continue
 
-            # 保存 gts 到 .nii.gz
-            save_to_nifti(gts, output_path, is_label=True)
+                organ_name = organ_name.replace(" ", "_")  # 替换空格
+                organ_folder = os.path.join(output_folder, "val_1", organ_name, dataset_name, "labelsTr")
 
-    print("所有文件转换完成！")
+                # 创建目录并复制文件
+                os.makedirs(organ_folder, exist_ok=True)
+                shutil.copy(nii_path, os.path.join(organ_folder, file_name))
+                print(f"已移动 {file_name} 到 {organ_folder}")
 
 
-# 设定输入和输出路径
-input_directory = ''
-output_directory = ''
+# 运行代码
+dataset_folder = "./validation"  # 你的数据集文件夹，包含 CT_AbdomenAtlas, CT_AMOS, MR_AMOS
+json_path = "./CVPR25.json"  # JSON 文件路径
+output_folder = "./val_new"  # 目标输出文件夹
 
-# 运行转换
-convert_folder_npz_to_nifti(input_directory, output_directory)
+organize_dataset(dataset_folder, json_path, output_folder)
