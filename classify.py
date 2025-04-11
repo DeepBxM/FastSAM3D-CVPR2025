@@ -1,67 +1,126 @@
-	import os
+import os
+import numpy as np
+import nibabel as nib
 import json
 import shutil
 
 
+def save_to_nifti(data, save_path, is_label=False):
+    """
+    Save a numpy array to a .nii.gz file.
+    
+    Parameters:
+    - data: numpy array, image or label data
+    - save_path: output path
+    - is_label: whether the data is label (affects data type)
+    """
+    if is_label:
+        data = data.astype(np.uint8)
+    else:
+        data = data.astype(np.float32) if data.dtype == np.float64 else data
+
+    affine = np.eye(4)
+    nifti_img = nib.Nifti1Image(data, affine)
+
+    if is_label:
+        nifti_img.header.set_data_dtype(np.uint8)
+
+    nib.save(nifti_img, save_path)
+    print(f"✅ Saved: {save_path}")
+
+
+def convert_folder_npz_to_nifti(input_dir, output_dir):
+    """
+    Convert all .npz files in a folder (with 'gts' arrays) to .nii.gz files.
+    
+    Parameters:
+    - input_dir: directory containing .npz files
+    - output_dir: directory to save .nii.gz files
+    """
+    os.makedirs(output_dir, exist_ok=True)
+
+    for filename in os.listdir(input_dir):
+        if filename.endswith('.npz'):
+            npz_path = os.path.join(input_dir, filename)
+            print(f"🔄 Processing: {npz_path}")
+
+            data = np.load(npz_path)
+            if 'gts' not in data:
+                print(f"⚠️ Warning: 'gts' not found in {filename}, skipping...")
+                continue
+
+            gts = data['gts']
+            base_name = os.path.splitext(filename)[0]
+            output_filename = f"{base_name}_label.nii.gz"
+            output_path = os.path.join(output_dir, output_filename)
+
+            save_to_nifti(gts, output_path, is_label=True)
+
+    print("✅ All files converted!")
+
+
 def organize_nii_files(json_path, labels_dir, output_dir):
-    # 确保 JSON 文件存在
+    """
+    Organize .nii.gz label files into subdirectories based on JSON keys.
+    
+    Parameters:
+    - json_path: path to JSON file containing top-level keys
+    - labels_dir: directory containing .nii.gz files
+    - output_dir: root directory to organize output
+    """
     if not os.path.exists(json_path):
-        print(f"❌ 错误：JSON 文件 {json_path} 不存在！")
+        print(f"❌ Error: JSON file {json_path} does not exist!")
         return
 
-    # 读取 JSON 文件
     with open(json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    # 获取所有顶层键
     top_keys = set(data.keys())
-    print(f"✅ JSON 文件中的顶层键：{top_keys}")
+    print(f"📋 Top-level keys in JSON: {top_keys}")
 
-    # 确保 labels 文件夹存在
     if not os.path.exists(labels_dir):
-        print(f"❌ 错误：labels 文件夹 {labels_dir} 不存在！")
+        print(f"❌ Error: Labels directory {labels_dir} does not exist!")
         return
 
-    # 获取 labels 目录中的所有 .nii.gz 文件
     nii_files = [f for f in os.listdir(labels_dir) if f.endswith('.nii.gz')]
-    print(f"✅ 找到 {len(nii_files)} 个 nii.gz 文件：{nii_files}")
+    print(f"📂 Found {len(nii_files)} .nii.gz files: {nii_files}")
 
-    moved_files = 0  # 计数已移动的文件
-    unmatched_files = []  # 记录未匹配的文件
+    moved_files = 0
+    unmatched_files = []
 
-    # 遍历 nii.gz 文件并进行模糊匹配
     for nii_file in nii_files:
         matched = False
         for key in top_keys:
-            if key in nii_file:  # 只要文件名中包含键名，就算匹配
-                # 目标子文件夹
+            if key in nii_file:
                 target_folder = os.path.join(output_dir, key)
                 os.makedirs(target_folder, exist_ok=True)
 
-                # 移动文件
                 src_path = os.path.join(labels_dir, nii_file)
                 dst_path = os.path.join(target_folder, nii_file)
 
                 if os.path.exists(src_path):
                     shutil.move(src_path, dst_path)
                     moved_files += 1
-                    print(f"✅ 移动 {nii_file} -> {target_folder}")
+                    print(f"✅ Moved {nii_file} -> {target_folder}")
                 else:
-                    print(f"⚠️ 警告：文件 {nii_file} 在 labels 目录中不存在！")
+                    print(f"⚠️ Warning: File {nii_file} does not exist in labels directory!")
 
-                matched = True  # 记录匹配成功
-                break  # 一个文件最多匹配一个键，避免重复匹配
+                matched = True
+                break
 
         if not matched:
-            unmatched_files.append(nii_file)  # 记录未匹配的文件
+            unmatched_files.append(nii_file)
 
-    print(f"\n�� 任务完成，共移动 {moved_files} 个文件。")
-    print(f"�� 仍然保留在 labels 目录中的 {len(unmatched_files)} 个文件：{unmatched_files}")
+    print(f"\n📦 Task completed. {moved_files} files moved.")
+    print(f"📌 Unmatched files (still in labels directory): {unmatched_files}")
 
 
-# 使用示例（请修改路径）
-json_path = "./CVPR25 (copy).json"  # JSON 文件路径
-labels_dir = ""  # labels 文件夹路径
-output_dir = "./validation"  # 目标存放文件的路径
+# ==== User Settings (modify as needed) ====
+input_directory = './input_npz'               # Directory with input .npz files
+intermediate_label_dir = './labels'           # Intermediate output for converted labels
+json_path = './CVPR25 (copy).json'            # Path to JSON file with top-level keys
+output_directory = './validation'             # Final organized output directory
 
-organize_nii_files(json_path, labels_dir, output_dir)
+# ==== Execution ====
+convert_folder_npz_to_nifti(input_directory, intermediate_label_dir)
+organize_nii_files(json_path, intermediate_label_dir, output_directory)
