@@ -19,7 +19,7 @@ pip install -r requirements.txt
 ```
 ---
 
-## steps
+## Steps
 
 ### 1 Prepare Your Training Data
 
