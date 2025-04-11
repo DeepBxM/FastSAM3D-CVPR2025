@@ -61,7 +61,7 @@ def organize_nii_files(json_path, labels_dir, output_dir):
 
 # 使用示例（请修改路径）
 json_path = "./CVPR25 (copy).json"  # JSON 文件路径
-labels_dir = "/media/wagnchogn/ssd_2t/lmy/step/val_new (copy)/labels"  # labels 文件夹路径
+labels_dir = ""  # labels 文件夹路径
 output_dir = "./validation"  # 目标存放文件的路径
 
 organize_nii_files(json_path, labels_dir, output_dir)
