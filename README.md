@@ -26,6 +26,7 @@ pip install -r requirements.txt
 ```
 ---
 
+> ```
 > data/medical_preprocessed
 >       ├── adrenal
 >       │ ├── ct_WORD
@@ -43,6 +44,7 @@ pip install -r requirements.txt
 ## steps
 
 ### 1 Prepare Your Training Data
+
 Organize all NPZ files containing gts.npy from the validation set into the 'labels' folder. The  `classify.py` script can convert NPZ files to NII.GZ format and categorize them based on  `CVPR25.json`.
 
 >    ```console
@@ -55,42 +57,14 @@ Categorize all .nii.gz files into subfolders based on the top-level keys in the 
 >    python categorize.py
 >    ```
 
-
-
----
-
-
-
-### 4 按照 JSON 文件中的标签定义，对每个标签进行提取并分类存储
-
-- 对 `label.nii.gz` 中的每个标签进行分割提取
-- 根据标签名创建对应子文件夹
-- 将提取的标签图像保存至对应子文件夹下
-
->    ```console
->    python renew_classify.py
->    ```
-
----
-
-### 5 将 `image.npz` 中的 `imgs.npy` 转换为 `image.nii.gz`
-
-- 读取 `imgs.npy` 并保存为 `image.nii.gz` 格式
-
->    ```console
->    python image_nii.py
->    ```
-
----
-
-### 6 移动 `image.nii.gz` 到每个器官子文件夹的 `imagesTr/` 中
-
-- 每个器官子文件夹内新建 `imagesTr/`
-- 将对应的 `image.nii.gz` 移动进去
+Convert the imgs.npy array from image.npz to NIfTI format image.nii.gz, then move it to respective organ-specific subfolders' imagesTr/ directories and standardize filenames by removing _image/_label suffixes.
 
 >    ```console
 >    python reallocate.py
 >    ```
+
+
+
 
 ---
 
