@@ -26,17 +26,6 @@ pip install -r requirements.txt
 ```
 ---
 
-
-
-
-###  Usage
-
-<h4>From <code>source</code></h4>
-
-> 1.Prepare Your Training Data (from nnU-Net-style dataset): 
-
-> Ensure that your training data is organized according to the structure shown in the `data/medical_preprocessed` directories. The target file structures should be like the following:
-> ```
 > data/medical_preprocessed
 >       ├── adrenal
 >       │ ├── ct_WORD
@@ -60,7 +49,11 @@ Organize all NPZ files containing gts.npy from the validation set into the 'labe
 >    python classify.py
 >    ```
 
+Categorize all .nii.gz files into subfolders based on the top-level keys in the corresponding JSON files, creating the subfolders as needed.
 
+>    ```console
+>    python categorize.py
+>    ```
 
 
 
