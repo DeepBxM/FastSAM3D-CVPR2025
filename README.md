@@ -1,6 +1,28 @@
-# FastSam3D-CVPR25
+# FastSAM3D (CVPR 2025)
 
+FastSAM3D is an efficient 3D medical image segmentation framework, leveraging the power of Segment Anything and SAM-Med3D. This project aims for rapid 3D segmentation of general organs and is applicable to a variety of medical imaging tasks.
 
+---
+
+##  System Requirements
+
+- **Python** ≥ 3.9  
+- **CUDA** = 12.1  
+- **GPU Requirements**: GPUs supporting FLASH Attention, such as A100, RTX 3090/4090, H100 (Ampere, Ada, Hopper architectures)
+
+---
+
+##  Installation
+
+### Install from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/skill-diver/FastSAM3D-v1
+cd FastSAM3D-v1
+
+# Install dependencies
+pip install -r requirements.txt
 
 ---
 
@@ -56,13 +78,12 @@
 
 ---
 
-## 🔧 步骤说明
+## steps
 
-### 1 将所有 `gts_npz` 中的标签 `.npz` 转换为 `label.nii.gz`
+### 1 Organize all NPZ files containing gts.npy from the validation set into the 'labels' folder. The  `classify.py` script can convert NPZ files to NII.GZ format and categorize them based on  `CVPR25.json`.
 
-从每个 `.npz` 文件中提取 `gts.npy`，并保存为 `label.nii.gz` 格式，写入到 `labels/` 文件夹中。
 >    ```console
->    python label_nii.py
+>    python classify.py
 >    ```
 ---
 
@@ -209,49 +230,7 @@ Below are the links to the checkpoints for FastSAM3D and its fine-tuned version:
 | FASTSAM3D            | [Download](https://huggingface.co/techlove/FastSAM3D/tree/main) |
 | Teacher Model        | [Download](https://huggingface.co/blueyo0/SAM-Med3D/blob/main/sam_med3d_turbo.pth) |
 
----
-##  Visualize
-<div align="center">
-  <img src="asserts/visualize.png">
-</div>
-##  Contributing
 
-Contributions are welcome! Here are several ways you can contribute:
-
-- **[Report Issues](https://github.com/skill-diver/FastSAM3D-v1/issues)**: Submit bugs found or log feature requests for the `FastSAM3D-v1` project.
-- **[Submit Pull Requests](https://github.com/skill-diver/FastSAM3D-v1/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
-- **[Join the Discussions](https://github.com/skill-diver/FastSAM3D-v1/discussions)**: Share your insights, provide feedback, or ask questions.
-
-<details closed>
-<summary>Contributor Graph</summary>
-<br>
-<p align="center">
-   <a href="https://github.com{/skill-diver/FastSAM3D-v1/}graphs/contributors">
-      <img src="https://contrib.rocks/image?repo=skill-diver/FastSAM3D-v1">
-   </a>
-</p>
-</details>
-
----
-
-##  License
-
-This project is protected under the [Apache 2.0 license](LICENSE). 
-
----
-
-## Citation
-
-```
-@misc{shen2024fastsam3d,
-      title={FastSAM3D: An Efficient Segment Anything Model for 3D Volumetric Medical Images}, 
-      author={Yiqing Shen and Jingxing Li and Xinyuan Shao and Blanca Inigo Romillo and Ankush Jindal and David Dreizin and Mathias Unberath},
-      year={2024},
-      eprint={2403.09827},
-      archivePrefix={arXiv},
-      primaryClass={eess.IV}
-}
-```
 ---
 
 ##  Acknowledgement
