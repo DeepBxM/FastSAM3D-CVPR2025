@@ -117,8 +117,8 @@ def organize_nii_files(json_path, labels_dir, output_dir):
 
 # ==== User Settings (modify as needed) ====
 input_directory = './input_npz'               # Directory with input .npz files
-intermediate_label_dir = './labels'           # Intermediate output for converted labels
-json_path = './CVPR25 (copy).json'            # Path to JSON file with top-level keys
+intermediate_label_dir = './labelsTr'           # Intermediate output for converted labels
+json_path = './CVPR25.json'            # Path to JSON file with top-level keys
 output_directory = './validation'             # Final organized output directory
 
 # ==== Execution ====
